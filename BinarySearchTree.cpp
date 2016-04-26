@@ -1,18 +1,18 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-
+template <class Z>
 class BinarySearchTree{
 public:
 	BinarySearchTree() :root(nullptr){}
-	bool add(int x){
+	bool add(Z x){
 		if (root == nullptr) { root = new der(x); return true; }
 		else { root->add(x); return true; }
 		return false;
 	}
-	bool search(int x){ return(root->search(x)); }
+	bool search(Z x){ return(root->search(x)); }
 	bool read_file(char* a){
-		ifstream fin; int x;
+		ifstream fin; Z x;
 		fin.open(a);
 		if (fin.is_open()){
 			while (!fin.eof()){
@@ -33,8 +33,8 @@ public:
 private:
 	class der{
 	public:
-		der(int x) :D(x), l(nullptr), r(nullptr){}
-		void add(int x){
+		der(Z x) :D(x), l(nullptr), r(nullptr){}
+		void add(Z x){
 			if (x < D){ 
 				if (l != nullptr) l->add(x);
 				if (l == nullptr) l = new der(x); 
@@ -44,11 +44,13 @@ private:
 				if (r == nullptr) r = new der(x);
 			}
 		}
-		bool search(int x){
-			if (x == D) return true;
-			if (x < D){ if (l != nullptr) l->search(x); else return false; }
-			if (x > D){ if (r != nullptr) r->search(x); else return false; }
-			}
+		bool search(Z x){
+			if (x == D) { return true; }
+			if (x > D) if (r != nullptr) return(r->search(x));
+			if (x < D) if (l != nullptr) return(l->search(x));
+			return false;
+		}
+
 		void print_console(){
 			if (l != nullptr) l->print_console();  
 			cout << D << " ";
@@ -65,7 +67,7 @@ private:
 			fout.close();
 		}
 	private:
-		int D;
+		Z D;
 		der *l;
 		der *r;
 	};
@@ -73,19 +75,20 @@ private:
 };
 
 
+#define TAHK double
 
 int main(){
-	BinarySearchTree tree; int J;
+	BinarySearchTree<TAHK> tree; int J;
 	cout << "add-1, search-2, read_f-3, print_f-4, print_c-5, exit-0\n";
 	do{
 		cout << "J="; cin >> J;
 		if (J == 1){
-			int x;
+			TAHK x;
 			cout << "x="; cin >> x;
 			if(tree.add(x))cout<<"done\n";
 		}
 		if (J == 2){
-			int x;
+			TAHK x;
 			cout << "x="; cin >> x;
 			if (tree.search(x)) cout << "founded\n"; else cout << "not founded\n";
 		}
