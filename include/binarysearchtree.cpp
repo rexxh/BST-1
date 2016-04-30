@@ -108,7 +108,7 @@ private:
 };
 
 
-#define TAHK double
+/*#define TAHK double
 
 int main(){
 	BinarySearchTree<TAHK> tree; int J;
@@ -145,5 +145,5 @@ int main(){
 		}
 	} while (J);
 	system("pause");
-}
+}*/
 #endif
