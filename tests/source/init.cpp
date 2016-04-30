@@ -1,5 +1,5 @@
 
-#include <BinarySearchTree.cpp>
+#include <binarysearchtree.cpp>
 #include <catch.hpp>
 #include <fstream>
 #include <iostream>
