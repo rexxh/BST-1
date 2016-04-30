@@ -1,5 +1,6 @@
 #ifndef BinarySearchTree_cpp
 #define BinarySearchTree_cpp
+#pragma once
 #include <iostream>
 #include <fstream>
 using namespace std;
