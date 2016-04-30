@@ -1,16 +1,44 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+class Isclucheniya {
+	char* err;
+public:
+	Isclucheniya(char* _err) : err(_err) {}
+	char* what() { return err; }
+};
+
+class Uzhe_est : public Isclucheniya{
+	char* err;
+public:
+	Uzhe_est() : Isclucheniya("ERROR: etot element uzhe dobavlen") {};
+};
+
+class FileNotOpen : public Isclucheniya{
+	char* err;
+public:
+	FileNotOpen() : Isclucheniya("ERROR: file not open!") {};
+};
+
+class Pustoe_derevo : public Isclucheniya{
+	char* err;
+public:
+	Pustoe_derevo() : Isclucheniya("ERROR: derevo pusto!") {};
+};
+
 template <class Z>
 class BinarySearchTree{
 public:
 	BinarySearchTree() :root(nullptr){}
 	bool add(Z x){
+		if(root!=nullptr) if (search(x)) throw Uzhe_est();
 		if (root == nullptr) { root = new der(x); return true; }
 		else { root->add(x); return true; }
 		return false;
 	}
-	bool search(Z x){ return(root->search(x)); }
+	bool search(Z x){ if (root == nullptr) throw Pustoe_derevo();
+		return(root->search(x)); }
 	bool read_file(char* a){
 		ifstream fin; Z x;
 		fin.open(a);
@@ -22,12 +50,14 @@ public:
 			fin.close();
 			return true;
 		}
-		return false;
+		throw FileNotOpen();
 	}
 	void print_file(char* b){
+		if (root == nullptr) throw Pustoe_derevo();
 		root->print_file(b);
 	}
 	void print_console(){
+		if (root == nullptr) throw Pustoe_derevo();
 		root->print_console();
 	}
 private:
@@ -85,25 +115,30 @@ int main(){
 		if (J == 1){
 			TAHK x;
 			cout << "x="; cin >> x;
-			if(tree.add(x))cout<<"done\n";
+			try{ if (tree.add(x))cout << "done\n"; }
+			catch (Uzhe_est &e){ cout << e.what() << endl; }
 		}
 		if (J == 2){
 			TAHK x;
 			cout << "x="; cin >> x;
-			if (tree.search(x)) cout << "founded\n"; else cout << "not founded\n";
+			try{ if (tree.search(x)) cout << "founded\n"; else cout << "not founded\n"; }
+			catch (Pustoe_derevo &e) { cout << e.what() << endl; } 
 		}
 		if (J == 3){
 			char a[20];
 			cout << "name of file: "; cin >> a;
-			if (tree.read_file(a)) cout << "done\n";
+			try{ if (tree.read_file(a)) cout << "done\n"; }
+			catch (FileNotOpen &e) { cout << e.what() << endl; }
 		}
 		if (J == 4){
 			char b[20];
 			cout << "name of file: "; cin >> b;
-			tree.print_file(b);
+			try{ tree.print_file(b); }
+			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
 		}
 		if (J == 5){
-			tree.print_console(); cout << endl;
+			try{ tree.print_console(); cout << endl; }
+			catch (Pustoe_derevo &e) { cout << e.what() << endl; }
 		}
 	} while (J);
 	system("pause");
