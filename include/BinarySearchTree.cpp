@@ -1,3 +1,5 @@
+#ifndef BinarySearchTree_cpp
+#define BinarySearchTree_cpp
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -143,3 +145,4 @@ int main(){
 	} while (J);
 	system("pause");
 }
+#endif
