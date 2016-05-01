@@ -5,107 +5,139 @@
 #include <fstream>
 using namespace std;
 
-class Isclucheniya {
+class Iscluchenia {
 	char* err;
 public:
-	Isclucheniya(char* _err) : err(_err) {}
-	char* what() { return err; }
+	Iscluchenia(char* _err);
+	char* what();
 };
 
-class Uzhe_est : public Isclucheniya{
-	char* err;
+class Uzhe_est : public Iscluchenia{
 public:
-	Uzhe_est() : Isclucheniya("ERROR: etot element uzhe dobavlen") {};
+	Uzhe_est();
 };
 
-class FileNotOpen : public Isclucheniya{
-	char* err;
+class File_Not_Open : public Iscluchenia{
 public:
-	FileNotOpen() : Isclucheniya("ERROR: file not open!") {};
+	File_Not_Open();
 };
 
-class Pustoe_derevo : public Isclucheniya{
-	char* err;
+class Pustoe_derevo : public Iscluchenia{
 public:
-	Pustoe_derevo() : Isclucheniya("ERROR: derevo pusto!") {};
+	Pustoe_derevo();
 };
 
 template <class Z>
 class BinarySearchTree{
 public:
-	BinarySearchTree() :root(nullptr){}
-	bool add(Z x){
-		if(root!=nullptr) if (search(x)) throw Uzhe_est();
-		if (root == nullptr) { root = new der(x); return true; }
-		else { root->add(x); return true; }
-		return false;
-	}
-	bool search(Z x){ if (root == nullptr) throw Pustoe_derevo();
-		return(root->search(x)); }
-	bool read_file(char* a){
-		ifstream fin; Z x;
-		fin.open(a);
-		if (fin.is_open()){
-			while (!fin.eof()){
-				fin >> x;
-				this->add(x);
-			}
-			fin.close();
-			return true;
-		}
-		throw FileNotOpen();
-	}
-	void print_file(char* b){
-		if (root == nullptr) throw Pustoe_derevo();
-		root->print_file(b);
-	}
-	void print_console(){
-		if (root == nullptr) throw Pustoe_derevo();
-		root->print_console();
-	}
+	BinarySearchTree();
+	bool add(Z x);
+	bool search(Z x);
+	bool read_file(char* a);
+	void print_file(char* b);
+	void print_console();
 private:
-	class der{
-	public:
-		der(Z x) :D(x), l(nullptr), r(nullptr){}
-		void add(Z x){
-			if (x < D){ 
-				if (l != nullptr) l->add(x);
-				if (l == nullptr) l = new der(x); 
-			}
-			if (x>D){
-				if (r != nullptr) r->add(x);
-				if (r == nullptr) r = new der(x);
-			}
-		}
-		bool search(Z x){
-			if (x == D) { return true; }
-			if (x > D) if (r != nullptr) return(r->search(x));
-			if (x < D) if (l != nullptr) return(l->search(x));
-			return false;
-		}
-
-		void print_console(){
-			if (l != nullptr) l->print_console();  
-			cout << D << " ";
-			if (r != nullptr) r->print_console();  
-		}
-		void print_file(char *b){
-			ofstream fout;
-			fout.open(b, ios::app);
-			if (fout.is_open()){
-				if (l != nullptr) l->print_file(b);
-				fout << D << " "; fout.close();
-				if (r != nullptr) r->print_file(b);
-			}
-			fout.close();
-		}
-	private:
-		Z D;
-		der *l;
-		der *r;
-	};
+	class der; 
 	der* root;
 };
+
+template <class Z>
+class BinarySearchTree<Z>::der{
+public:
+	der(Z x);
+	void add(Z x);
+	bool search(Z x);
+	void print_console();
+	void print_file(char *b);
+private:
+	Z D;
+	der *l;
+	der *r;
+};
+
+
+Iscluchenia::Iscluchenia(char* _err) : err(_err){}
+char* Iscluchenia::what() { return err; }
+Uzhe_est::Uzhe_est() : Iscluchenia("ERROR: etot element uzhe dobavlen!") {}
+File_Not_Open::File_Not_Open() : Iscluchenia("ERROR: file not open!") {}
+Pustoe_derevo::Pustoe_derevo() : Iscluchenia("ERROR: derevo pusto!") {}
+
+template <class Z>
+BinarySearchTree<Z>::der::der(Z x) : D(x), l(nullptr), r(nullptr){}
+template <class Z>
+void BinarySearchTree<Z>::der::add(Z x){
+	if (x < D){
+		if (l != nullptr) l->add(x);
+		if (l == nullptr) l = new der(x);
+	}
+	if (x>D){
+		if (r != nullptr) r->add(x);
+		if (r == nullptr) r = new der(x);
+	}
+}
+template <class Z>
+bool BinarySearchTree<Z>::der::search(Z x){
+	if (x == D) { return true; }
+	if (x > D) if (r != nullptr) return(r->search(x));
+	if (x < D) if (l != nullptr) return(l->search(x));
+	return false;
+}
+template <class Z>
+void BinarySearchTree<Z>::der::print_console(){
+	if (l != nullptr) l->print_console();
+	cout << D << " ";
+	if (r != nullptr) r->print_console();
+}
+template <class Z>
+void BinarySearchTree<Z>::der::print_file(char* b){
+	ofstream fout;
+	fout.open(b, ios::app);
+	if (fout.is_open()){
+		if (l != nullptr) l->print_file(b);
+		fout << D << " "; fout.close();
+		if (r != nullptr) r->print_file(b);
+	}
+	fout.close();
+}
+
+template <class Z>
+BinarySearchTree<Z>::BinarySearchTree() : root(nullptr){}
+template <class Z>
+bool BinarySearchTree<Z>::add(Z x){
+	if (root != nullptr) if (search(x)) throw Uzhe_est();
+	if (root == nullptr) { root = new der(x); return true; }
+	else { root->add(x); return true; }
+	return false;
+}
+template <class Z>
+bool BinarySearchTree<Z>::search(Z x){
+	if (root == nullptr) throw Pustoe_derevo();
+	return(root->search(x));
+}
+template <class Z>
+bool BinarySearchTree<Z>::read_file(char* a){
+	ifstream fin; Z x;
+	fin.open(a);
+	if (fin.is_open()){
+		while (!fin.eof()){
+			fin >> x;
+			this->add(x);
+		}
+		fin.close();
+		return true;
+	}
+	throw File_Not_Open();
+}
+template <class Z>
+void BinarySearchTree<Z>::print_file(char* b){
+	if (root == nullptr) throw Pustoe_derevo();
+	root->print_file(b);
+}
+template <class Z>
+void BinarySearchTree<Z>::print_console(){
+	if (root == nullptr) throw Pustoe_derevo();
+	root->print_console();
+}
 
 
 /*#define TAHK double
@@ -131,7 +163,7 @@ int main(){
 			char a[20];
 			cout << "name of file: "; cin >> a;
 			try{ if (tree.read_file(a)) cout << "done\n"; }
-			catch (FileNotOpen &e) { cout << e.what() << endl; }
+			catch (File_Not_Open &e) { cout << e.what() << endl; }
 		}
 		if (J == 4){
 			char b[20];
