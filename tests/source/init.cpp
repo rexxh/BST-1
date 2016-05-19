@@ -1,25 +1,25 @@
 
-#include <binarysearchtree.cpp>
+#include <BST.cpp>
 #include <catch.hpp>
 #include <fstream>
 #include <iostream>
 using namespace std;
 
 SCENARIO("Search init", "[init]") {
-BinarySearchTree<int> tree;
-tree.add(7);
-tree.add(5);
-tree.add(1);
-tree.add(9);
-tree.add(3);
-REQUIRE(tree.search(7));
-REQUIRE(tree.search(9));
-REQUIRE(tree.search(5));
-REQUIRE(tree.search(1));
-REQUIRE(tree.search(3));
-REQUIRE(!tree.search(0));
-REQUIRE(!tree.search(8));
-REQUIRE(!tree.search(6));
-REQUIRE(!tree.search(4));
-REQUIRE(!tree.search(2));
+BST<int> tree;
+Node<int>* tmp;
+Node<int>* Root = tree.get_root();
+tree.Insert(Root, 6, 100);
+tree.Insert(Root, 0, 200);
+tree.Insert(Root, -5, 800);
+tree.Insert(Root, 12, 44);
+REQUIRE(tmp = tree.Search(6));
+REQUIRE(tmp =tree.Search(0));
+REQUIRE(tmp =tree.Search(-5));
+REQUIRE(tmp =tree.Search(12));
+REQUIRE
+(tree.Search(11);
+catch(Element_not_found errorrr););
+REQUIRE(tree.Search(1);
+catch(Element_not_found errorrr););
 }
