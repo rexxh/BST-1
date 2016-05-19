@@ -32,7 +32,6 @@ struct Node {
 	T data;
 	Node* left;
 	Node* right;
-	Node* prev;
 };
 
 template<class T>
@@ -41,6 +40,8 @@ private:
 	Node<T> *root;
 public:
 	BST();
+
+        BST(int key, T data);
 
 	void Insert(Node<T> *&tmp, int key, T data);
 
