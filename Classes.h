@@ -27,7 +27,7 @@ public:
 };
 
 template<typename T>
-struct Node {
+struct Node { 
 	int key;
 	T data;
 	Node* left;
