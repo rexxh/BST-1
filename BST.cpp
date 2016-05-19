@@ -5,13 +5,22 @@
 #include "Classes.h"
 
 template<class T>
+BST<T>::BST(int key, T data)
+{
+	root = new Node<T>;
+	root->key = key;
+	root->data = data;
+	root->left = nullptr;
+	root->right = nullptr;
+};
+
+template<class T>
 BST<T>::BST() 
 {
 	root = new Node<T>;
 	std::cin >> root->key >> root->data;
 	root->left = nullptr;
 	root->right = nullptr;
-	root->prev = nullptr;
 };
 
 template<class T>
